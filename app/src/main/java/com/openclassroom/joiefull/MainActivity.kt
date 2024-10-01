@@ -10,48 +10,56 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.openclassroom.joiefull.composition.Greeting
+import com.openclassroom.joiefull.composition.ProductCard
 import com.openclassroom.joiefull.ui.theme.JoiefullTheme
 
+/**
+ * Main activity of the application.
+ */
 class MainActivity : ComponentActivity() {
+
+    /**
+     * Lifecycle method that is called when the activity is created.
+     * @param savedInstanceState The saved state of the activity.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         //Install splash screen (keep before the call of super.onCreate())
         installSplashScreen()
         super.onCreate(savedInstanceState)
-
+        //Edge to edge navigation mode feature
+        enableEdgeToEdge()
         //TODO SPLASH SCREEN ----------
         initSplashScreenEndAnimation()
 
 
 
 
-
-
-
-
-//TODO COMPOSITION ----------
-
-        enableEdgeToEdge()
+        //TODO COMPOSITION ----------
         setContent {
             JoiefullTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+
+                    //Product card
+                    ProductCard(
+                        title = "Veste urbaine",
+                        price = "89$",
+                        imageUrl = "https://media.glamour.com/photos/607f2749febb5e66fe7c52cf/1:1/w_1200,h_1200,c_limit/terry%20cloth%20trend_jumpsuit.jpg",
                         modifier = Modifier.padding(innerPadding)
                     )
+
+
+
                 }
             }
         }
 
 
-
     }
-
 
 
     /**
@@ -69,27 +77,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
-
-
-}
-
-
-
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JoiefullTheme {
-        Greeting("Android")
-    }
 }
