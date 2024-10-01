@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.openclassroom.joiefull"
-        minSdk = 28
+        minSdk = 31
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,4 +66,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    //SplashScreen library
+    implementation(libs.androidx.core.splashscreen)
+
+
 }
