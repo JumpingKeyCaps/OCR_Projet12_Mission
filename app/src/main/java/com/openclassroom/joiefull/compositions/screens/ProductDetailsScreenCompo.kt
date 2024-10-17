@@ -42,37 +42,27 @@ import com.openclassroom.joiefull.compositions.composables.HeaderCard
 import com.openclassroom.joiefull.compositions.composables.ProductDescription
 import com.openclassroom.joiefull.compositions.composables.RatingSelector
 import com.openclassroom.joiefull.model.Product
-import com.openclassroom.joiefull.model.ProductDetails
 import com.openclassroom.joiefull.viewmodel.ProductDetailsViewModel
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 
 @Composable
-fun ProductDetailsScreen(product: MutableState<Product?>? = null,navController: NavController? = null,viewModel: ProductDetailsViewModel = hiltViewModel()) {
-
-
-   // viewModel.getProductDetailsById(product?.value?.id?:0)
-
-
-
-
+fun ProductDetailsScreen(viewModel: ProductDetailsViewModel = hiltViewModel()) {
 
     val productDetails by viewModel.productDetails.collectAsStateWithLifecycle()
 
 
-//--- LIKE
-    val productIsLiked by viewModel.productIsLiked.collectAsStateWithLifecycle()
 
 
 //--- RATING
-    val productRating by viewModel.productRating.collectAsStateWithLifecycle()
-    val ratingState = remember{ mutableFloatStateOf(productRating) }
-    LaunchedEffect(productRating){
-        ratingState.floatValue = productRating
+    val ratingState = remember{ mutableFloatStateOf(productDetails.rating) }
+    LaunchedEffect(productDetails){
+        ratingState.floatValue = productDetails.rating
     }
 //---
 
+    //A REMPLACER par le flow collected apres l'appel de l'API via le viewmodel
 
+    val product : MutableState<Product?>? = null
 
 
 
@@ -96,9 +86,9 @@ fun ProductDetailsScreen(product: MutableState<Product?>? = null,navController: 
                     FilterQuality.High,
                     onLikeButtonClick = {
                         //on like button click action, update the productDetails object with the new liked value and add it to the database
-                        viewModel.updateLikeValue(!productIsLiked)
+                        viewModel.updateLikeValue(!productDetails.isLiked)
                     },
-                    isLiked = productIsLiked,
+                    isLiked = productDetails.isLiked,
                     likeSizing = 18,
                     pictureModifier = Modifier
                         .height(431.dp)
@@ -114,7 +104,7 @@ fun ProductDetailsScreen(product: MutableState<Product?>? = null,navController: 
             }
             //---Product body (name, price, original price, ratings)
             BodyCard(product?.value?.name ?: "",
-                productRating,
+                productDetails.rating,
                 product?.value?.price ?: 0f,
                 product?.value?.originalPrice ?: 0f,
                 18,
@@ -130,7 +120,6 @@ fun ProductDetailsScreen(product: MutableState<Product?>? = null,navController: 
                 ratingState = ratingState,
                 onRatingChanged = {
                     ratingState.floatValue = it
-
                     viewModel.addProductDetails(productDetails.copy(rating = it))
                 }
             )
@@ -146,5 +135,5 @@ fun ProductDetailsScreen(product: MutableState<Product?>? = null,navController: 
 @Preview(showSystemUi = true)
 @Composable
 fun ProductDetailsScreenPreviews() {
-    ProductDetailsScreen(null)
+    //ProductDetailsScreen(null)
 }

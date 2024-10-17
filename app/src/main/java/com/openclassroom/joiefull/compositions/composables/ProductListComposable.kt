@@ -26,7 +26,10 @@ import com.openclassroom.joiefull.model.Product
  * @param modifier Modifier for the composable
  */
 @Composable
-fun ProductList(products: List<Product>, titleSection: String, modifier: Modifier = Modifier, navController: NavController,screenMode: MutableState<WindowWidthSizeClass>) {
+fun ProductList(products: List<Product>,
+                titleSection: String,
+                modifier: Modifier = Modifier,
+                onProductClick: (Int) -> Unit = {},) {
     Column(modifier = modifier.padding(0.dp,0.dp,0.dp,0.dp)){
         //TITLE SECTION
         TitleSection(title = titleSection, modifier = Modifier.padding(15.dp,5.dp,5.dp,0.dp))
@@ -41,13 +44,7 @@ fun ProductList(products: List<Product>, titleSection: String, modifier: Modifie
                         if(products.indexOf(product) == products.lastIndex) 15.dp else 3.dp,  //special right padding for the last element of the list
                         0.dp),
                     pictureModifier = Modifier.clickable {
-
-                        // navigate to details screen
-                        if(screenMode.value == WindowWidthSizeClass.COMPACT || screenMode.value == WindowWidthSizeClass.MEDIUM){
-
-                            navController.navigate("ProductDetailScreen/${product.id}")
-                        }
-
+                        onProductClick(product.id)
                     }
                 )
             }
