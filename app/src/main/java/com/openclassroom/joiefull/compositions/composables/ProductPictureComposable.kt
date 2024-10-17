@@ -1,6 +1,7 @@
-package com.openclassroom.joiefull.compositions.Composables
+package com.openclassroom.joiefull.compositions.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -23,31 +24,29 @@ import com.openclassroom.joiefull.R
  */
 
 @Composable
-fun ProductPicture(imageUrl: String){
+fun ProductPicture(imageUrl: String,filterQuality: FilterQuality = FilterQuality.Low,modifier: Modifier){
+
     //---PRODUCT PICTURE (loaded with Coil)
     Image(
         painter = rememberAsyncImagePainter(
             imageUrl,
             contentScale = ContentScale.Crop, // Optionally crop the image
-            filterQuality = FilterQuality.Low, // reduce the quality of the image
+            filterQuality = filterQuality, // reduce the quality of the image
             placeholder = painterResource(R.drawable.productplaceholder),
-
         ),
         contentDescription = "Product image",
         contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .width(198.dp)
-            .height(198.dp)
-            .padding(0.dp)
-            .clip(RoundedCornerShape(20.dp))
+        modifier = modifier
     )
-
-
 }
 
 
 @Preview(showSystemUi = true)
 @Composable
 fun ProductPicturePreview() {
-    ProductPicture(" ")
+    ProductPicture("",modifier = Modifier
+        .width(198.dp)
+        .height(198.dp)
+        .padding(0.dp)
+        .clip(RoundedCornerShape(20.dp)))
 }
