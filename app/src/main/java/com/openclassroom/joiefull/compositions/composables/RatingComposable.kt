@@ -1,4 +1,4 @@
-package com.openclassroom.joiefull.compositions.Composables
+package com.openclassroom.joiefull.compositions.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,7 +23,7 @@ import com.openclassroom.joiefull.ui.theme.YellowRating
  * A composable function that displays the rating of a product.
  */
 @Composable
-fun RatingProduct(note: Float, modifier: Modifier = Modifier) {
+fun RatingProduct(note: Float,sizing: Int, modifier: Modifier = Modifier) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -37,7 +36,7 @@ fun RatingProduct(note: Float, modifier: Modifier = Modifier) {
             tint = YellowRating
         )
         Spacer(modifier = Modifier.width(1.dp))
-        Text(text = note.toString(), fontSize = 14.sp, color = Color.Black, style = MaterialTheme.typography.bodyLarge)
+        Text(text = note.toString(), fontSize = sizing.sp, color = Color.Black, style = MaterialTheme.typography.bodyLarge)
     }
 
 
@@ -47,5 +46,5 @@ fun RatingProduct(note: Float, modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 fun RatingProductPreview() {
-    RatingProduct(4.3f)
+    RatingProduct(4.3f,14)
 }
