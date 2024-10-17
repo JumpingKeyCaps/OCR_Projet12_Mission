@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.adaptive.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,6 +71,9 @@ dependencies {
 
     //SplashScreen library
     implementation(libs.androidx.core.splashscreen)
+
+    //Coil picture loader
+    implementation(libs.coil.compose)
 
 
 }

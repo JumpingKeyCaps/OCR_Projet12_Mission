@@ -7,15 +7,11 @@ import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.Surface
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.openclassroom.joiefull.composition.Greeting
-import com.openclassroom.joiefull.composition.ProductCard
+import com.openclassroom.joiefull.compositions.MainComposition
+import com.openclassroom.joiefull.model.Product
 import com.openclassroom.joiefull.ui.theme.JoiefullTheme
 
 /**
@@ -38,26 +34,26 @@ class MainActivity : ComponentActivity() {
 
 
 
+        //Product List data sample (TO REMOVE)------------
+        val sampleProducts = listOf(
+            Product(id = 1,name = "Sac à main orange",price = "19.09€",originalPrice = "24.99€",likes = 12,rating = 4.5f, imageDescription = "", category = "Accessories",imageUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg"),
+            Product(id = 2,name = "Jean pour femme",price = "32.29€",originalPrice = "34.99€",likes = 25,rating = 2.7f,imageDescription = "", category = "Accessories",imageUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/bottoms/1.jpg"),
+            Product(id = 3,name = "Bottes noires pour l'automne",price = "54.49€",originalPrice = "74.99€",likes = 67,rating = 3.9f,imageDescription = "", category = "Accessories",imageUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/shoes/1.jpg"),
+            Product(id = 4,name = "Blazer marron",price = "9.99€",originalPrice = "29.99€",likes = 89,rating = 4.8f,imageDescription = "", category = "Accessories",imageUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/tops/1.jpg"),
+            Product(id = 5,name = "Pull vert femme",price = "27.59€",originalPrice = "39.99€",likes = 2,rating = 3.1f,imageDescription = "", category = "Accessories",imageUrl = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/tops/2.jpg"),
+        )
+    //---------------------------------
+
 
         //TODO COMPOSITION ----------
         setContent {
             JoiefullTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                    //Product card
-                    ProductCard(
-                        title = "Veste urbaine",
-                        price = "89$",
-                        imageUrl = "https://media.glamour.com/photos/607f2749febb5e66fe7c52cf/1:1/w_1200,h_1200,c_limit/terry%20cloth%20trend_jumpsuit.jpg",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-
-
-
+                Surface{
+                   MainComposition(sampleProducts)
                 }
+
             }
         }
-
 
     }
 
