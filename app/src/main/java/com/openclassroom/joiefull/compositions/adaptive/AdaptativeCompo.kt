@@ -4,28 +4,21 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
-import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
 import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
-import androidx.compose.material3.adaptive.layout.SupportingPaneScaffoldRole
-import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberSupportingPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.openclassroom.joiefull.compositions.navigation.NavRoutes
 import com.openclassroom.joiefull.compositions.screens.ProductDetailsScreen
+import com.openclassroom.joiefull.compositions.screens.ProductsScreenAdaptive
 import com.openclassroom.joiefull.model.Product
 
-
+/**
+ * Adaptive composable function of the application.
+ */
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun AdaptiveContent(){
@@ -42,7 +35,6 @@ fun AdaptiveContent(){
     val sharedProduct = rememberSaveable { mutableStateOf<Product?>(null) }
 
 
-
     //Create the adaptive Scaffold
     SupportingPaneScaffold(
         directive = navigator.scaffoldDirective,
@@ -50,9 +42,7 @@ fun AdaptiveContent(){
         //1- Main pane content ---
         mainPane  = {
             AnimatedPane(modifier = Modifier.safeContentPadding()) {
-
                 ProductsScreenAdaptive(navigator = navigator, sharedProduct = sharedProduct)
-
             }
         },
 
@@ -63,10 +53,6 @@ fun AdaptiveContent(){
             }
         }
     )
-
-
-
-
 }
 
 

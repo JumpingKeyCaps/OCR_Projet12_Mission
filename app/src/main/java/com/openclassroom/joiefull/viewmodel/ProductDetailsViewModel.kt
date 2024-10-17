@@ -25,25 +25,11 @@ class ProductDetailsViewModel @Inject constructor(
     val productDetails: StateFlow<ProductDetails> get() = _productDetails
 
 
-
     private val _productRating = MutableStateFlow(0f)
     val productRating: StateFlow<Float> get() = _productRating
 
     private val _productIsLiked = MutableStateFlow(false)
     val productIsLiked: StateFlow<Boolean> get() = _productIsLiked
-
-
-
-
-    //initialisation
-    init {
-        val productId = savedStateHandle.get<Int>("productId")
-        Log.d("DetailViewmodel", "Entry in viewmodel with productId = $productId")
-       // getProductDetailsById(productId.toInt())
-    }
-
-
-
 
 
     /**
@@ -69,16 +55,8 @@ class ProductDetailsViewModel @Inject constructor(
                          val productDetails = productDetailsDto.let { ProductDetails.fromDto(it) }
                          _productDetails.value = productDetails
 
-
-                        _productRating.value = productDetails.rating
-
-                    _productIsLiked.value = productDetails.isLiked
-
-
-
-
-                    Log.d("UpdateProductDetails", "Load Product details : Id = ${productDetails.id} Rating = ${productDetails.rating}  isLiked = ${productDetails.isLiked}")
-
+                         _productRating.value = productDetails.rating
+                         _productIsLiked.value = productDetails.isLiked
 
                 }
             }
@@ -105,17 +83,6 @@ class ProductDetailsViewModel @Inject constructor(
            productDetailsRepository.addProductDetails(_productDetails.value.copy(isLiked = isLiked))
         }
     }
-
-
-
-
-
-    fun getProductById(id: Int) {
-
-
-
-    }
-
 
 
 }
