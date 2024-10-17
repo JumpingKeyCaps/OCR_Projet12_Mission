@@ -1,4 +1,4 @@
-package com.openclassroom.joiefull.compositions.Composables
+package com.openclassroom.joiefull.compositions.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
