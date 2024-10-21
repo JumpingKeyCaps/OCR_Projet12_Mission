@@ -1,7 +1,6 @@
-package com.openclassroom.joiefull.compositions.composables
+package com.openclassroom.joiefull.compositions.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -12,39 +11,41 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.openclassroom.joiefull.R
 
-
 /**
  * A composable function that displays a product picture.
+ *
  * @param imageUrl The URL of the product image.
+ * @param filterQuality The filter quality for the product image.
+ * @param modifier The modifier for the composable.
  */
-
 @Composable
-fun ProductPicture(imageUrl: String,filterQuality: FilterQuality = FilterQuality.Low,modifier: Modifier){
-
-    //---PRODUCT PICTURE (loaded with Coil)
+fun PictureProduct(imageUrl: String, filterQuality: FilterQuality = FilterQuality.Low, modifier: Modifier){
     Image(
         painter = rememberAsyncImagePainter(
             imageUrl,
-            contentScale = ContentScale.Crop, // Optionally crop the image
-            filterQuality = filterQuality, // reduce the quality of the image
-            placeholder = painterResource(R.drawable.productplaceholder),
+            contentScale = ContentScale.Crop, // crop the image
+            filterQuality = filterQuality, // set adapted filter quality for the image
+            placeholder = painterResource(R.drawable.productpictureplaceholder),
         ),
-        contentDescription = "Product image",
+        contentDescription = stringResource(R.string.product_picture_content_description),
         contentScale = ContentScale.Crop,
         modifier = modifier
     )
 }
 
-
+/**
+ * A preview of the ProductPicture composable.
+ */
 @Preview(showSystemUi = true)
 @Composable
 fun ProductPicturePreview() {
-    ProductPicture("",modifier = Modifier
+    PictureProduct("",modifier = Modifier
         .width(198.dp)
         .height(198.dp)
         .padding(0.dp)
