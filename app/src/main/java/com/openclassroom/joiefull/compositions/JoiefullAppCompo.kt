@@ -1,7 +1,6 @@
 package com.openclassroom.joiefull.compositions
 
 import androidx.compose.runtime.Composable
-import com.openclassroom.joiefull.compositions.adaptive.AdaptiveContent
 import com.openclassroom.joiefull.ui.theme.JoiefullTheme
 
 /**
