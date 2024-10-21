@@ -11,7 +11,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -25,7 +24,7 @@ import com.openclassroom.joiefull.R
  * @param modifier The modifier for the composable.
  */
 @Composable
-fun PictureProduct(imageUrl: String, filterQuality: FilterQuality = FilterQuality.Low, modifier: Modifier){
+fun PictureProduct(imageUrl: String, filterQuality: FilterQuality = FilterQuality.Low, modifier: Modifier,contentDescription: String){
     Image(
         painter = rememberAsyncImagePainter(
             imageUrl,
@@ -33,7 +32,7 @@ fun PictureProduct(imageUrl: String, filterQuality: FilterQuality = FilterQualit
             filterQuality = filterQuality, // set adapted filter quality for the image
             placeholder = painterResource(R.drawable.productpictureplaceholder),
         ),
-        contentDescription = stringResource(R.string.product_picture_content_description),
+        contentDescription = contentDescription,
         contentScale = ContentScale.Crop,
         modifier = modifier
     )
@@ -45,7 +44,9 @@ fun PictureProduct(imageUrl: String, filterQuality: FilterQuality = FilterQualit
 @Preview(showSystemUi = true)
 @Composable
 fun ProductPicturePreview() {
-    PictureProduct("",modifier = Modifier
+    PictureProduct("",
+        contentDescription = "",
+        modifier = Modifier
         .width(198.dp)
         .height(198.dp)
         .padding(0.dp)
