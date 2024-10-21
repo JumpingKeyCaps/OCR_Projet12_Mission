@@ -24,8 +24,6 @@ interface ProductDetailsDtoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductDetails(productDetails: ProductDetailsDto)
 
-
-
     /**
      * Method to GET details of a product by his ID.
      * @param id the product details dto id to get.
@@ -34,6 +32,12 @@ interface ProductDetailsDtoDao {
     @Query("SELECT * FROM product_details WHERE id = :id")
     fun getProductDetailsById(id:Int): Flow<ProductDetailsDto>
 
+    /**
+     * Method to GET all product details.
+     * @return a Flow of the list of product details objects.
+     */
+    @Query("SELECT * FROM product_details")
+    fun getAllProductDetails(): Flow<List<ProductDetailsDto>>
 
     /**
      * Method to DELETE a ProductDetails entry.
