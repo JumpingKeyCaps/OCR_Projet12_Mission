@@ -11,14 +11,21 @@ import javax.inject.Inject
  */
 class ProductDetailsRepository @Inject constructor(private val productDetailsDao: ProductDetailsDtoDao) {
 
-
     /**
      * Method to get the product details by his ID.
      * @param id the product ID.
-     * @return a Flow of the product details.
+     * @return a Flow of the product details dto.
      */
     fun getProductDetailsById(id: Int): Flow<ProductDetailsDto?> {
         return productDetailsDao.getProductDetailsById(id)
+    }
+
+    /**
+     * Method to get all the product details.
+     * @return a Flow of the list of product details dto.
+     */
+    fun getAllProductDetails(): Flow<List<ProductDetailsDto>> {
+        return productDetailsDao.getAllProductDetails()
     }
 
     /**
