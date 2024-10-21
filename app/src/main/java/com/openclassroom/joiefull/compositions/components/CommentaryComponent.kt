@@ -37,7 +37,9 @@ fun CommentaryField(
         value = value,
         onValueChange = {onValueChange(it)},
         label = {
-             Text((if(value.isEmpty()) stringResource(R.string.commentary_placeholder)  else stringResource(R.string.commentary_placeholder_short)  ))
+             Text(
+                 text = (if(value.isEmpty()) stringResource(R.string.commentary_placeholder)  else stringResource(R.string.commentary_placeholder_short)),
+                )
                 },
         shape = RoundedCornerShape(10.dp),
         minLines = 2,
@@ -50,8 +52,9 @@ fun CommentaryField(
                 focusManager.clearFocus() //Clear the focus on the text field when the user presses the done button on the keyboard.
                 keyboardActions(value)
             }),
-        modifier = modifier.fillMaxWidth()
-    )
+        modifier = modifier
+            .fillMaxWidth(),
+        )
 }
 
 
