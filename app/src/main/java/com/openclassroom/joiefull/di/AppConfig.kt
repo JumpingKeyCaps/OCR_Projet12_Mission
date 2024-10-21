@@ -4,7 +4,7 @@ package com.openclassroom.joiefull.di
  */
 object AppConfig {
 
-        /** The server base URL for real device on local network.*/
+        /** The Joiefull server API base URL */
     const val BASE_URL = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/api/"
 
 }
