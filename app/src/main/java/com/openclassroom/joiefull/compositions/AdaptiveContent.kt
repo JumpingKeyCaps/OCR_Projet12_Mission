@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.openclassroom.joiefull.compositions.screens.DetailsScreen
 import com.openclassroom.joiefull.compositions.screens.ProductsScreen
+import com.openclassroom.joiefull.di.AppConfig.PAN_DIVIDER_RATIO
 
 /**
  * Adaptive composition of the application.
@@ -36,7 +37,7 @@ fun AdaptiveContent(){
         //1- Main pane content --- (list of products screen)
         listPane   = {
             AnimatedPane(modifier = Modifier
-                .preferredWidth((currentWindowSize().width * 0.65f).dp)) { //65% of the screen width
+                .preferredWidth((currentWindowSize().width * PAN_DIVIDER_RATIO).dp)) { //60% of the screen width
                 ProductsScreen(
                     onProductClick = {
                         navigator.navigateTo(ListDetailPaneScaffoldRole.Detail,it)
@@ -48,7 +49,7 @@ fun AdaptiveContent(){
             val productId = navigator.currentDestination?.content
             if (productId != null) {
                 AnimatedPane(modifier = Modifier
-                    .preferredWidth((currentWindowSize().width * 0.35f).dp)//35% of the screen width
+                    .preferredWidth((currentWindowSize().width * (1-PAN_DIVIDER_RATIO)).dp)//30% of the screen width
                 ) {
                     DetailsScreen(
                         productId = productId,
@@ -59,18 +60,6 @@ fun AdaptiveContent(){
                     )
                 }
             }
-
-            /**
-            AnimatedPane(modifier = Modifier.safeContentPadding()) {
-                val productId = navigator.currentDestination?.content
-                if (productId == null) {
-                   DetailsPlaceHolderScreen() // details is empty so we use a placeholder
-                } else {
-                   DetailsScreen(productId = productId)
-                }
-            }
-            */
-
         }
     )
 }
