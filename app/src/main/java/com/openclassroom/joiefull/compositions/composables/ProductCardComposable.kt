@@ -17,10 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.model.Product
 import com.openclassroom.joiefull.model.ProductDetails
+import kotlin.math.roundToInt
 
 /**
  * Composable function for a product element card section
@@ -39,8 +42,20 @@ fun ProductCard(
     pictureModifier: Modifier,
     onLikeButtonClick: (ProductDetails) -> Unit = {}
     ) {
-    Card(modifier = modifier.padding(0.dp)) {
-        Column(modifier = Modifier.background(Color.White),verticalArrangement = Arrangement.spacedBy(0.dp)) {
+
+    val productCardContentDescription =
+        stringResource(R.string.product_card_content_description,
+            product.picture.description,
+            product.name,
+            product.price.roundToInt(),
+            product.originalPrice.roundToInt(),
+            productDetails.rating.roundToInt())
+
+    Card(modifier = modifier
+        .padding(0.dp)
+    ) {
+        Column(
+            modifier = Modifier.background(Color.White),verticalArrangement = Arrangement.spacedBy(0.dp)) {
 
             //1 - Header of the product card (Product picture + like button)
             HeaderCard(
@@ -67,9 +82,10 @@ fun ProductCard(
                     .height(27.dp)
                     .padding(1.dp)
                     .offset(x = (-10).dp, y = (-10).dp),
-                onBackClick = {},
+                onBackClick = {false},
                 isDetailsMode = false,
-                isExpandedMode = false
+                isExpandedMode = false,
+                pictureProductContentDescription = productCardContentDescription,
             )
 
             //2 - Body of the product card (Title + price + original price + rating)
