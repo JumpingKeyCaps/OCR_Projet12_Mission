@@ -14,7 +14,7 @@ interface RetrofitService {
      *
      * (Use of "suspend" to allow asynchronous call inside coroutine)
      *
-     * @return a list of Clothes objects.
+     * @return a response list of Clothes objects.
      */
     @GET("clothes.json")
     suspend fun getClothes(): Response<List<Product>>
