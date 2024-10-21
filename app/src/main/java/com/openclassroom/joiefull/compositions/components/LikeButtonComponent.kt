@@ -18,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +37,12 @@ import com.openclassroom.joiefull.R
  */
 @Composable
 fun LikeButton(likes: Int,modifier: Modifier,onClick: () -> Unit,isLiked: Boolean, sizing: Int) {
-    ElevatedButton(modifier = modifier,
+    val likeButtonAccessibilityLabel = stringResource(R.string.like_button_accessibility_label)
+
+    ElevatedButton(modifier = modifier
+        .semantics {
+            onClick(label = likeButtonAccessibilityLabel, action = {true})
+        },
         onClick = {
             onClick()
         },
