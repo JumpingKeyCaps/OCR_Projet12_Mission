@@ -7,11 +7,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.ui.theme.JoiefullTheme
+import java.util.Locale
 
 /**
  * A composable function that displays a title section with a given title.
@@ -21,12 +27,20 @@ import com.openclassroom.joiefull.ui.theme.JoiefullTheme
  */
 @Composable
 fun TitleSection(title: String, modifier: Modifier = Modifier) {
-    Text(text = title,
+    val titleCategoryContentDescription = stringResource(R.string.title_category_content_description,title)
+    Text(text = (title.lowercase(Locale.ROOT)).replaceFirstChar { it.uppercase() },
         fontSize = 22.sp,
         color = Color.Black,
-        style = MaterialTheme.typography.headlineMedium,
+        style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.W500,
-        modifier = modifier.padding(5.dp,5.dp,5.dp,5.dp).fillMaxWidth())
+        modifier = modifier
+            .padding(5.dp,5.dp,5.dp,5.dp)
+            .fillMaxWidth()
+            .semantics {
+                contentDescription = titleCategoryContentDescription
+                heading()
+            }
+    )
 }
 
 
