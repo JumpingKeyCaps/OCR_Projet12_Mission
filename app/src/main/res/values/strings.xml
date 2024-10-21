@@ -1,3 +1,20 @@
 <resources>
+    <!--App name -->
     <string name="app_name">Joiefull</string>
+
+    <!--Place holder -->
+    <string name="commentary_placeholder">Partagez ici vos impressions sur cette pièce</string>
+    <string name="commentary_placeholder_short">Votre impression sur cette pièce</string>
+
+    <!--Content description -->
+    <string name="back_arrow_content_description">Fleche de retour en arrière</string>
+    <string name="like_button_content_description">Bouton like</string>
+    <string name="share_button_content_description">Bouton partager</string>
+    <string name="product_rating_content_description">Note moyenne du produit</string>
+    <string name="product_picture_content_description">Image du produit</string>
+    <string name="user_picture_content_description">Image de profil de l\'utilisateur</string>
+
+    <!--Label -->
+    <string name="star_icon_tint_animation_label">Tint de l\'étoile</string>
+
 </resources>
