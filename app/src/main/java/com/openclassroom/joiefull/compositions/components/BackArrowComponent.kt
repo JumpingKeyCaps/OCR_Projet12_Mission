@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.openclassroom.joiefull.R
 
@@ -18,10 +20,13 @@ import com.openclassroom.joiefull.R
  * @param onBackClick The callback function that is called when the user clicks the back arrow.
  */
 @Composable
-fun BackArrow(modifier: Modifier, onBackClick: () -> Unit) {
+fun BackArrow(modifier: Modifier, onBackClick: () -> Boolean) {
+    val backArrowAccessibilityLabel = stringResource(R.string.back_arrow_accessibility_label)
     IconButton(
-        onClick = onBackClick,
-        modifier = modifier
+        onClick = {onBackClick()},
+        modifier = modifier.semantics {
+            onClick(label = backArrowAccessibilityLabel, action = {onBackClick()})
+        }
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -38,5 +43,5 @@ fun BackArrow(modifier: Modifier, onBackClick: () -> Unit) {
 @Preview(showSystemUi = true)
 @Composable
 fun BackArrowPreview() {
-    BackArrow(modifier = Modifier,onBackClick ={})
+    BackArrow(modifier = Modifier,onBackClick ={true})
 }
