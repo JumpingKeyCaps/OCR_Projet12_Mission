@@ -46,16 +46,18 @@ fun HeaderCard(modifier: Modifier,
                likeSizing: Int,
                likeModifier: Modifier,
                pictureModifier: Modifier,
-               onBackClick: () -> Unit,
+               onBackClick: () -> Boolean,
                onShareClick: () -> Unit = {},
                isDetailsMode: Boolean = false,
-               isExpandedMode: Boolean = false){
+               isExpandedMode: Boolean = false,
+               pictureProductContentDescription: String){
     Box(modifier = modifier.padding(1.dp)
     ){
         //---Product picture (loaded with Coil)
         PictureProduct(
             imageUrl = url,
             filterQuality = filterQuality,
+            contentDescription = pictureProductContentDescription,
             modifier = pictureModifier
         )
         //---Product like button
@@ -113,8 +115,9 @@ fun HeaderCardPreview() {
             .height(431.dp)
             .padding(0.dp)
             .clip(RoundedCornerShape(20.dp)),
-        onBackClick = {},
-        isDetailsMode = true
+        onBackClick = {true},
+        isDetailsMode = true,
+        pictureProductContentDescription = "product name"
     )
 
 
