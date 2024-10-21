@@ -23,7 +23,6 @@ class JoiefullNetworkServiceImpl @Inject constructor(private val retrofitService
     override suspend fun getClothes(): List<Product> {
         try{
             val response = retrofitService.getClothes()
-
             if (response.isSuccessful) {
                 return response.body()!!
             } else {
@@ -32,8 +31,6 @@ class JoiefullNetworkServiceImpl @Inject constructor(private val retrofitService
         }catch (e: Exception){
             throw customException(e)
         }
-
-
     }
 
     /**

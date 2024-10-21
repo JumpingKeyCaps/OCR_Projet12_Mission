@@ -4,22 +4,18 @@ import com.openclassroom.joiefull.data.service.network.interfaces.JoiefullNetwor
 import com.openclassroom.joiefull.model.Product
 import javax.inject.Inject
 
-
 /**
  * The app API service to communicate with the server.
  */
 class JoiefullApiService @Inject constructor(private val joiefullNetworkService: JoiefullNetworkService) {
 
-
     /**
      * Methode to get the clothes list.
      *
-     * @return  a clothes objects list.
+     * @return  a clothes product objects list.
      */
     suspend fun getClothes(): List<Product> {
         return joiefullNetworkService.getClothes()
     }
-
-
 
 }
