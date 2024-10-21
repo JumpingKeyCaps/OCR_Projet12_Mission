@@ -1,4 +1,4 @@
-package com.openclassroom.joiefull.compositions.composables
+package com.openclassroom.joiefull.compositions.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -14,17 +14,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.ui.theme.YellowRating
 
 /**
- * A composable function that displays the rating of a product.
+ * A composable function that displays the rating average of a product.
+ *
+ * @param note The rating average of the product.
+ * @param sizing The size of the text.
+ * @param modifier The modifier to be applied to the composable.
  */
 @Composable
 fun RatingProduct(note: Float,sizing: Int, modifier: Modifier = Modifier) {
-
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
@@ -32,17 +37,20 @@ fun RatingProduct(note: Float,sizing: Int, modifier: Modifier = Modifier) {
     ) {
         Icon(modifier = Modifier.size(16.dp),
             imageVector = Icons.Rounded.Star,
-            contentDescription = "Like",
+            contentDescription = stringResource(R.string.product_rating_content_description),
             tint = YellowRating
         )
         Spacer(modifier = Modifier.width(1.dp))
-        Text(text = note.toString(), fontSize = sizing.sp, color = Color.Black, style = MaterialTheme.typography.bodyLarge)
+        Text(text = note.toString(),
+            fontSize = sizing.sp,
+            color = Color.Black,
+            style = MaterialTheme.typography.bodyLarge)
     }
-
-
 }
 
-
+/**
+ * A preview of the RatingProduct composable.
+ */
 @Preview(showSystemUi = true)
 @Composable
 fun RatingProductPreview() {
