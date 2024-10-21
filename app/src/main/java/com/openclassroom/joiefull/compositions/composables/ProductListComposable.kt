@@ -9,7 +9,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.compositions.components.TitleSection
 import com.openclassroom.joiefull.model.Product
 import com.openclassroom.joiefull.model.ProductDetails
@@ -40,6 +42,7 @@ fun ProductList(
             modifier = Modifier.padding(15.dp,5.dp,5.dp,0.dp)
         )
         //LIST OF PRODUCT CARDS
+        val clickDetailsActionLabel = stringResource(R.string.action_click_product_picture)
         LazyRow(modifier = modifier.fillMaxWidth()) {
             items(products, key = { product -> product.id }) { product ->    //(use of Key to recomposition optimisation)
                 ProductCard(
@@ -51,7 +54,7 @@ fun ProductList(
                         end = if(products.indexOf(product) == products.lastIndex) 15.dp else 3.dp,  //special right padding for the last element of the list
                         bottom = 0.dp),
                     pictureModifier = Modifier
-                        .clickable {
+                        .clickable(onClickLabel = clickDetailsActionLabel ) {
                              onProductClick(product.id)
                         },
                     onLikeButtonClick = onLikeButtonClick
