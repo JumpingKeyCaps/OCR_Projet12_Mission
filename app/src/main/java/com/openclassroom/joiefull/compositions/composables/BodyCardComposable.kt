@@ -12,6 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -19,7 +23,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.compositions.components.RatingProduct
+import kotlin.math.roundToInt
 
 /**
  * A composable function that displays the product card body (Title, rating, price, old price).
@@ -39,7 +45,9 @@ fun BodyCard(
     originalPrice: Float,
     sizing: Int,
     modifier: Modifier){
-    Column{
+    Column(modifier = Modifier
+        .semantics(mergeDescendants = true) { }
+    ){
         //Top section:  Product name and product rating --
         Row(modifier = modifier) {
             Row(
@@ -55,20 +63,34 @@ fun BodyCard(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(0.dp).fillMaxWidth()
+                        .semantics {
+                            heading()
+                        }
                 )
             }
+            val ratingContentDescription = stringResource(R.string.product_rating_content_description,title,rating.roundToInt())
             Row(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.End, modifier = Modifier.weight(20.0F)){
                 RatingProduct(
                     note = rating,
                     sizing = sizing,
-                    modifier = Modifier.padding(0.dp,0.dp,0.dp,0.dp))
+                    modifier = Modifier
+                        .padding(0.dp,0.dp,0.dp,0.dp),
+                    noteModifier = Modifier
+                        .semantics {
+                            contentDescription = ratingContentDescription
+                        }
+                    )
             }
 
 
         }
         //Bottom section:  product price and original price --
+
+        val priceContentDescription = stringResource(R.string.product_price_content_description,title,price)
+        val originalPriceContentDescription = stringResource(R.string.product_originalPrice_content_description,title,originalPrice)
+
         Row(modifier = modifier) {
             Row(
                 verticalAlignment = Alignment.Top,
@@ -77,7 +99,12 @@ fun BodyCard(
                     text = "$price€",
                     fontSize = sizing.sp,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(0.dp).align(Alignment.Top)
+                    modifier = Modifier
+                        .padding(0.dp)
+                        .align(Alignment.Top)
+                        .semantics {
+                            contentDescription = priceContentDescription
+                        }
                 )
             }
             Row(
@@ -89,7 +116,12 @@ fun BodyCard(
                     style = MaterialTheme.typography.bodyLarge.merge(
                         TextStyle(textDecoration = TextDecoration.LineThrough)
                     ),
-                    modifier = Modifier.padding(0.dp).align(Alignment.Top)
+                    modifier = Modifier
+                        .padding(0.dp)
+                        .align(Alignment.Top)
+                        .semantics {
+                            contentDescription = originalPriceContentDescription
+                        }
                 )
             }
         }
