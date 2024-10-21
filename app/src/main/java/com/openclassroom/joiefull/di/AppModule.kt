@@ -127,5 +127,16 @@ object AppModule {
         return ProductDetailsRepository(productDetailsDao)
     }
 
+    // ----- Context providers modules
+    /**
+     * Method to provide the Application Context instance to use.
+     * @param context the application context.
+     * @return a Context instance ready to use.
+     */
+    @Provides
+    fun provideApplicationContext(@ApplicationContext context: Context): Context {
+        return context
+    }
+
 
 }
