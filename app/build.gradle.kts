@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.adaptive.android)
-    testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -101,17 +101,23 @@ dependencies {
     implementation (libs.converter.moshi)
 
     //Room
-    implementation ("androidx.room:room-runtime:2.6.1")
-    annotationProcessor ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
-    ksp ("androidx.room:room-compiler:2.6.1")
+    implementation (libs.androidx.room.runtime)
+    annotationProcessor (libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
+    ksp (libs.androidx.room.compiler)
 
 
-    //Adaptive library stuff
+    //Adaptive library
     implementation(libs.androidx.adaptive)
     implementation(libs.androidx.adaptive.layout)
     implementation(libs.androidx.adaptive.navigation)
 
+
+    //Unit test and mock
+    testImplementation(libs.junit)
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockk)
 
 
 }
