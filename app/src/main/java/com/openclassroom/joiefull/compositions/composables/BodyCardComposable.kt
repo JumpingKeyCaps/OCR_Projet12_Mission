@@ -19,11 +19,28 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.openclassroom.joiefull.compositions.components.RatingProduct
 
+/**
+ * A composable function that displays the product card body (Title, rating, price, old price).
+ *
+ * @param title The title of the product.
+ * @param rating The rating of the product.
+ * @param price The price of the product.
+ * @param originalPrice The original price of the product.
+ * @param sizing The size of the text.
+ * @param modifier The modifier for the composable.
+ */
 @Composable
-fun BodyCard(title: String,rating: Float,price: Float,oldPrice: Float,sizing: Int,modifier: Modifier){
+fun BodyCard(
+    title: String,
+    rating: Float,
+    price: Float,
+    originalPrice: Float,
+    sizing: Int,
+    modifier: Modifier){
     Column{
-        //top:  title and rating --
+        //Top section:  Product name and product rating --
         Row(modifier = modifier) {
             Row(
                 verticalAlignment = Alignment.Bottom,
@@ -43,18 +60,21 @@ fun BodyCard(title: String,rating: Float,price: Float,oldPrice: Float,sizing: In
             Row(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.End, modifier = Modifier.weight(20.0F)){
-                RatingProduct(rating,sizing,modifier = Modifier.padding(0.dp,0.dp,0.dp,0.dp))
+                RatingProduct(
+                    note = rating,
+                    sizing = sizing,
+                    modifier = Modifier.padding(0.dp,0.dp,0.dp,0.dp))
             }
 
 
         }
-        //bottom:  price and old price --
+        //Bottom section:  product price and original price --
         Row(modifier = modifier) {
             Row(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.Start, modifier = Modifier.weight(50.0F)){
                 Text(
-                    text = "$price$",
+                    text = "$price€",
                     fontSize = sizing.sp,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(0.dp).align(Alignment.Top)
@@ -64,20 +84,21 @@ fun BodyCard(title: String,rating: Float,price: Float,oldPrice: Float,sizing: In
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.End, modifier = Modifier.weight(50.0F)){
                 Text(
-                    text = "$oldPrice$",
+                    text = "$originalPrice€",
                     fontSize = sizing.sp,
                     style = MaterialTheme.typography.bodyLarge.merge(
                         TextStyle(textDecoration = TextDecoration.LineThrough)
                     ),
                     modifier = Modifier.padding(0.dp).align(Alignment.Top)
-
                 )
             }
         }
     }
-
 }
 
+/**
+ * A preview of the BodyCard composable.
+ */
 @Preview(showSystemUi = true)
 @Composable
 fun BodyCardPreview() {

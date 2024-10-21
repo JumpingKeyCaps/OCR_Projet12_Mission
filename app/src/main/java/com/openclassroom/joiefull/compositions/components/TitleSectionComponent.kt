@@ -1,4 +1,4 @@
-package com.openclassroom.joiefull.compositions.composables
+package com.openclassroom.joiefull.compositions.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +13,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.openclassroom.joiefull.ui.theme.JoiefullTheme
 
-
+/**
+ * A composable function that displays a title section with a given title.
+ *
+ * @param title The title to be displayed in the section.
+ * @param modifier The modifier to be applied to the composable.
+ */
 @Composable
 fun TitleSection(title: String, modifier: Modifier = Modifier) {
     Text(text = title,
@@ -22,11 +27,12 @@ fun TitleSection(title: String, modifier: Modifier = Modifier) {
         style = MaterialTheme.typography.headlineMedium,
         fontWeight = FontWeight.W500,
         modifier = modifier.padding(5.dp,5.dp,5.dp,5.dp).fillMaxWidth())
-
 }
 
 
-
+/**
+ * A preview of the TitleSection composable.
+ */
 @Preview(showBackground = true)
 @Composable
 fun TitleSectionPreview() {
