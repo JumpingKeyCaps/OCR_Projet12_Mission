@@ -29,8 +29,10 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -87,8 +89,9 @@ fun DetailsScreen(
             .padding(it)
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState(), enabled = true)
+            .semantics { isTraversalGroup = false }
         ) {
-            //---Product header (picture, likes)
+            // [1] --- Product header (picture, likes)
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .padding(15.dp, 0.dp, 15.dp, 30.dp)
@@ -98,6 +101,7 @@ fun DetailsScreen(
 
                 val pictureScaleMode = remember{ mutableStateOf(false) }
                 val dpi = LocalDensity.current.density
+
                 HeaderCard(
                     modifier = Modifier.align(Alignment.TopCenter),
                     url = product?.picture?.url ?: "null",
@@ -110,7 +114,7 @@ fun DetailsScreen(
                     likeSizing = 18,
                     pictureModifier = Modifier
                         .fillMaxWidth()
-                        .height(if (pictureScaleMode.value) (currentWindowSize().height / (dpi*1.26f)).dp else (currentWindowSize().height / (dpi*1.85f)).dp)
+                        .height(if (pictureScaleMode.value) (currentWindowSize().height / (dpi*1.255f)).dp else (currentWindowSize().height / (dpi*1.95f)).dp)
                         .padding(0.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .clickable { pictureScaleMode.value = !pictureScaleMode.value }
@@ -121,18 +125,23 @@ fun DetailsScreen(
                         .width(70.dp)
                         .height(33.dp)
                         .padding(1.dp)
-                        .offset(x = (-20).dp, y = (-20).dp),
+                        .offset(x = (-20).dp, y = (-20).dp)
+                        .semantics { this.traversalIndex = 4f; this.isTraversalGroup = true },
+                    backArrowModifier = Modifier
+                        .semantics { this.traversalIndex = 8f; this.isTraversalGroup = true },
                     onBackClick = onBackClick,
                     isDetailsMode = true,
                     isExpandedMode = isExpandedMode,
+                    shareButtonModifier = Modifier
+                        .semantics { this.traversalIndex = 7f; this.isTraversalGroup = true },
                     onShareClick = {
-                        //on share button click action, share the product name and price, commentary, and deep link
+                        //todo ---- SHARE FEATURE ----  share button click action, share the product name and price, commentary, and deep link
                         //todo ---- SHARE FEATURE ----
                     },
-                    pictureProductContentDescription = product?.picture?.description ?: " Photo du ${product?.name}"
+                    pictureProductContentDescription = product?.picture?.description ?: ""
                 )
             }
-            //---Product body (name, price, original price, ratings)
+            // [2] --- Product body (name, price, original price, ratings)
             BodyCard(
                 title = product?.name ?: "",
                 rating = productDetails.rating,
@@ -142,33 +151,40 @@ fun DetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp, 2.dp, 20.dp, 0.dp)
+                    .semantics { this.traversalIndex = 2f ; this.isTraversalGroup = true},
             )
-            //---Product description
+            // [3] --- Product description
             val emptyProductDefaultDescription = stringResource(R.string.empty_product_description, product?.name ?: "")
             DescriptionProduct(
                 description = product?.description ?: emptyProductDefaultDescription,
-                modifier = Modifier.padding(20.dp,10.dp,20.dp,0.dp)
+                modifier = Modifier
+                    .padding(20.dp,14.dp,20.dp,0.dp)
+                    .semantics { this.traversalIndex = 3f; this.isTraversalGroup = true }
             )
-            //---Rating Selector
+            // [4] --- Rating Selector
             RatingSelector(
-                modifier = Modifier.padding(20.dp,20.dp,20.dp,0.dp),
+                modifier = Modifier
+                    .padding(20.dp,20.dp,20.dp,0.dp)
+                    .semantics { this.traversalIndex = 5f; this.isTraversalGroup = true },
                 ratingState = ratingState,
                 onRatingChanged = {
                     ratingState.floatValue = it
                     viewModel.addProductDetails(productDetails.copy(rating = it))
                 },
                 userPicturePainter = painterResource(id = R.drawable.demo_profile_pic) // not specified in the project !
-                //Painter resource to replace by the user_picture logic, and call the picture url via coil like this:
+                //Painter resource to replace by the user picture logic, and call the picture url via coil like this:
                 // rememberAsyncImagePainter(url, contentScale = ContentScale.Crop, filterQuality = FilterQuality.High,placeholder = painterResource(R.drawable.userPicture_placeholder))
             )
-            //---Commentary Field
+            // [5] --- Commentary text Field
             CommentaryField(
                 value = commentaryTextInput.value,
                 onValueChange = {
                     commentaryTextInput.value = it
                     viewModel.addProductDetails(productDetails.copy(commentary = it))},
                 keyboardActions = { viewModel.addProductDetails(productDetails.copy(commentary = it))} ,
-                modifier = Modifier.padding(20.dp,20.dp,20.dp,20.dp)
+                modifier = Modifier
+                    .padding(20.dp,20.dp,20.dp,20.dp)
+                    .semantics { this.traversalIndex = 6f ; this.isTraversalGroup = true}
             )
         }
     }
