@@ -82,6 +82,8 @@ fun ProductCard(
                     .height(27.dp)
                     .padding(1.dp)
                     .offset(x = (-10).dp, y = (-10).dp),
+                backArrowModifier = Modifier,
+                shareButtonModifier = Modifier,
                 onBackClick = {false},
                 isDetailsMode = false,
                 isExpandedMode = false,
