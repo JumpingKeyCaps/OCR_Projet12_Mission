@@ -28,6 +28,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,7 +53,7 @@ import com.openclassroom.joiefull.viewmodel.ProductDetailsViewModel
 @Composable
 fun DetailsScreen(
     productId: Int,
-    onBackClick: () -> Unit = {},
+    onBackClick: () -> Boolean,
     isExpandedMode: Boolean) {
 
     val viewModel = hiltViewModel<ProductDetailsViewModel,ProductDetailsViewModel.Factory>(
@@ -78,15 +81,20 @@ fun DetailsScreen(
     Scaffold(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
-        .padding(0.dp)) { it->
+        .padding(0.dp)
+    ) { it->
         Column(modifier = Modifier
             .padding(it)
             .fillMaxSize()
-            .verticalScroll(state = rememberScrollState(), enabled = true)) {
+            .verticalScroll(state = rememberScrollState(), enabled = true)
+        ) {
             //---Product header (picture, likes)
             Box(modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp, 0.dp, 15.dp, 30.dp)){
+                .padding(15.dp, 0.dp, 15.dp, 30.dp)
+            ){
+                val pictureAccessibilityLabelUpscale = stringResource(R.string.product_picture_accessibility_label_upscale)
+                val pictureAccessibilityLabelDownscale = stringResource(R.string.product_picture_accessibility_label_downscale)
 
                 val pictureScaleMode = remember{ mutableStateOf(false) }
                 val dpi = LocalDensity.current.density
@@ -105,7 +113,10 @@ fun DetailsScreen(
                         .height(if (pictureScaleMode.value) (currentWindowSize().height / (dpi*1.26f)).dp else (currentWindowSize().height / (dpi*1.85f)).dp)
                         .padding(0.dp)
                         .clip(RoundedCornerShape(20.dp))
-                        .clickable { pictureScaleMode.value = !pictureScaleMode.value },
+                        .clickable { pictureScaleMode.value = !pictureScaleMode.value }
+                        .semantics {
+                            onClick(label = if(pictureScaleMode.value)pictureAccessibilityLabelDownscale else pictureAccessibilityLabelUpscale , action = {true})
+                        },
                     likeModifier = Modifier
                         .width(70.dp)
                         .height(33.dp)
@@ -117,7 +128,8 @@ fun DetailsScreen(
                     onShareClick = {
                         //on share button click action, share the product name and price, commentary, and deep link
                         //todo ---- SHARE FEATURE ----
-                    }
+                    },
+                    pictureProductContentDescription = product?.picture?.description ?: " Photo du ${product?.name}"
                 )
             }
             //---Product body (name, price, original price, ratings)
@@ -131,10 +143,10 @@ fun DetailsScreen(
                     .fillMaxWidth()
                     .padding(20.dp, 2.dp, 20.dp, 0.dp)
             )
-
             //---Product description
+            val emptyProductDefaultDescription = stringResource(R.string.empty_product_description, product?.name ?: "")
             DescriptionProduct(
-                description = product?.picture?.description ?: "description",
+                description = product?.description ?: emptyProductDefaultDescription,
                 modifier = Modifier.padding(20.dp,10.dp,20.dp,0.dp)
             )
             //---Rating Selector
@@ -158,7 +170,6 @@ fun DetailsScreen(
                 keyboardActions = { viewModel.addProductDetails(productDetails.copy(commentary = it))} ,
                 modifier = Modifier.padding(20.dp,20.dp,20.dp,20.dp)
             )
-
         }
     }
 
@@ -170,5 +181,5 @@ fun DetailsScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun ProductDetailsScreenPreviews() {
-    DetailsScreen(0,{},false)
+    DetailsScreen(0,{true},false)
 }
