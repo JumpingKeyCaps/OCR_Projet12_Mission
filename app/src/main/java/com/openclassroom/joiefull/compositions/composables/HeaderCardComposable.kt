@@ -46,7 +46,9 @@ fun HeaderCard(modifier: Modifier,
                likeSizing: Int,
                likeModifier: Modifier,
                pictureModifier: Modifier,
+               backArrowModifier: Modifier,
                onBackClick: () -> Boolean,
+               shareButtonModifier: Modifier,
                onShareClick: () -> Unit = {},
                isDetailsMode: Boolean = false,
                isExpandedMode: Boolean = false,
@@ -73,7 +75,7 @@ fun HeaderCard(modifier: Modifier,
             if(!isExpandedMode){
                 //---Back arrow button
                 BackArrow(
-                    modifier = Modifier
+                    modifier = backArrowModifier
                         .align(Alignment.TopStart)
                         .offset(x = (10).dp, y = (10).dp),
                     onBackClick = onBackClick
@@ -81,7 +83,7 @@ fun HeaderCard(modifier: Modifier,
             }
             //---Share button
             ShareButton(
-                modifier = Modifier
+                modifier = shareButtonModifier
                     .align(Alignment.TopEnd)
                     .offset(x = (-10).dp, y = (10).dp),
                 onShareClick = {
@@ -117,7 +119,9 @@ fun HeaderCardPreview() {
             .clip(RoundedCornerShape(20.dp)),
         onBackClick = {true},
         isDetailsMode = true,
-        pictureProductContentDescription = "product name"
+        pictureProductContentDescription = "product name",
+        backArrowModifier = Modifier,
+        shareButtonModifier = Modifier
     )
 
 
