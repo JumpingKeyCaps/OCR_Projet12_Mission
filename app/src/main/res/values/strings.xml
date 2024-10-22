@@ -43,6 +43,6 @@
     <string name="product_picture_accessibility_label_downscale">reduire la taille de l\'image</string>
 
     <!--default values for empty product description -->
-    <string name="empty_product_description">Malheureusement, l\'article %s ne possède pas encore de description, elle sera bientôt disponible.</string>
+    <string name="empty_product_description">Malheureusement, l\'article %s ne possède pas encore de description, elle sera bientôt disponible…</string>
 
 </resources>
