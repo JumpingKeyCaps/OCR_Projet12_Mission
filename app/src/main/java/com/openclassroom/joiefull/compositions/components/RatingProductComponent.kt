@@ -14,11 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.ui.theme.YellowRating
 
 /**
@@ -29,7 +27,7 @@ import com.openclassroom.joiefull.ui.theme.YellowRating
  * @param modifier The modifier to be applied to the composable.
  */
 @Composable
-fun RatingProduct(note: Float,sizing: Int, modifier: Modifier = Modifier) {
+fun RatingProduct(note: Float,sizing: Int, modifier: Modifier = Modifier,noteModifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End,
@@ -37,11 +35,12 @@ fun RatingProduct(note: Float,sizing: Int, modifier: Modifier = Modifier) {
     ) {
         Icon(modifier = Modifier.size(16.dp),
             imageVector = Icons.Rounded.Star,
-            contentDescription = stringResource(R.string.product_rating_content_description),
+            contentDescription = null,
             tint = YellowRating
         )
         Spacer(modifier = Modifier.width(1.dp))
         Text(text = note.toString(),
+            modifier = noteModifier,
             fontSize = sizing.sp,
             color = Color.Black,
             style = MaterialTheme.typography.bodyLarge)

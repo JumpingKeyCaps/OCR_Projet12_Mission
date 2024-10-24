@@ -1,13 +1,15 @@
 package com.openclassroom.joiefull.compositions.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.openclassroom.joiefull.R
 
@@ -18,12 +20,15 @@ import com.openclassroom.joiefull.R
  */
 @Composable
 fun ShareButton(modifier: Modifier, onShareClick: () -> Unit) {
+    val shareButtonAccessibilityLabel = stringResource(R.string.share_button_accessibility_label)
     IconButton(
         onClick = onShareClick,
-        modifier = modifier
+        modifier = modifier.semantics {
+            onClick(label = shareButtonAccessibilityLabel, action = {true})
+        }
     ) {
         Icon(
-            imageVector = Icons.Default.Share,
+            imageVector = Icons.Outlined.Share,
             contentDescription = stringResource(R.string.share_button_content_description),
             tint = Color.Black
         )

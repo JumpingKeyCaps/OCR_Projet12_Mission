@@ -46,16 +46,20 @@ fun HeaderCard(modifier: Modifier,
                likeSizing: Int,
                likeModifier: Modifier,
                pictureModifier: Modifier,
-               onBackClick: () -> Unit,
+               backArrowModifier: Modifier,
+               onBackClick: () -> Boolean,
+               shareButtonModifier: Modifier,
                onShareClick: () -> Unit = {},
                isDetailsMode: Boolean = false,
-               isExpandedMode: Boolean = false){
+               isExpandedMode: Boolean = false,
+               pictureProductContentDescription: String){
     Box(modifier = modifier.padding(1.dp)
     ){
         //---Product picture (loaded with Coil)
         PictureProduct(
             imageUrl = url,
             filterQuality = filterQuality,
+            contentDescription = pictureProductContentDescription,
             modifier = pictureModifier
         )
         //---Product like button
@@ -71,7 +75,7 @@ fun HeaderCard(modifier: Modifier,
             if(!isExpandedMode){
                 //---Back arrow button
                 BackArrow(
-                    modifier = Modifier
+                    modifier = backArrowModifier
                         .align(Alignment.TopStart)
                         .offset(x = (10).dp, y = (10).dp),
                     onBackClick = onBackClick
@@ -79,7 +83,7 @@ fun HeaderCard(modifier: Modifier,
             }
             //---Share button
             ShareButton(
-                modifier = Modifier
+                modifier = shareButtonModifier
                     .align(Alignment.TopEnd)
                     .offset(x = (-10).dp, y = (10).dp),
                 onShareClick = {
@@ -113,8 +117,11 @@ fun HeaderCardPreview() {
             .height(431.dp)
             .padding(0.dp)
             .clip(RoundedCornerShape(20.dp)),
-        onBackClick = {},
-        isDetailsMode = true
+        onBackClick = {true},
+        isDetailsMode = true,
+        pictureProductContentDescription = "product name",
+        backArrowModifier = Modifier,
+        shareButtonModifier = Modifier
     )
 
 

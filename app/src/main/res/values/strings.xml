@@ -8,13 +8,41 @@
 
     <!--Content description -->
     <string name="back_arrow_content_description">Fleche de retour en arrière</string>
-    <string name="like_button_content_description">Bouton like</string>
-    <string name="share_button_content_description">Bouton partager</string>
-    <string name="product_rating_content_description">Note moyenne du produit</string>
-    <string name="product_picture_content_description">Image du produit</string>
+    <string name="like_button_content_description">%s personnes ont ajouté cet article a leurs favories</string>
+    <string name="share_button_content_description">partager cet article sur vos reseaux sociaux</string>
     <string name="user_picture_content_description">Image de profil de l\'utilisateur</string>
+    <string name="commentary_content_description">commentaire sur le produit</string>
+    <string name="product_description_content_description">Description du produit</string>
+
+
+    <string name="product_price_content_description">Le prix du %s est de %s euros</string>
+    <string name="product_originalPrice_content_description">Le prix d\'origine du %s était de %s euros</string>
+    <string name="product_rating_content_description">La note moyenne du %s est de %s etoiles </string>
+
+    <string name="product_title_content_description">nom du produit</string>
+
+    <string name="title_category_content_description">Vous entrer dans la liste des articles appartenant à la catégorie %s</string>
+
+    <string name="product_card_content_description">%s. %s a %s euros au lieu de %s euros. sa note est de %s etoiles.</string>
+
+    <string name="rating_stars_bar_content_description">Barre de choix de la note pour cet article. Votre note actuel est de %s etoiles</string>
+
+    <!--Accessibility actions -->
+    <string name="action_click_product_picture"> voir plus de details sur cette article</string>
+    <string name="action_click_like_button">Clicker pour liker cet article</string>
+
 
     <!--Label -->
     <string name="star_icon_tint_animation_label">Tint de l\'étoile</string>
+    <string name="back_arrow_accessibility_label">retourner a l\'ecran des articles</string>
+    <string name="like_button_accessibility_label_liked">Ajouter cet article a vos favories</string>
+    <string name="like_button_accessibility_label_unliked">Retirer cet article de vos favories</string>
+
+    <string name="share_button_accessibility_label">Partager cet article</string>
+    <string name="product_picture_accessibility_label_upscale">agrandir la taille de l\'image</string>
+    <string name="product_picture_accessibility_label_downscale">reduire la taille de l\'image</string>
+
+    <!--default values for empty product description -->
+    <string name="empty_product_description">Malheureusement, l\'article %s ne possède pas encore de description, elle sera bientôt disponible…</string>
 
 </resources>

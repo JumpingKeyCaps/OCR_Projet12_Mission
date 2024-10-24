@@ -16,11 +16,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.compositions.components.RatingStarsBar
+import kotlin.math.roundToInt
 
 /**
  * A composable function that displays a rating selector and the user profile picture.
@@ -41,17 +44,21 @@ fun RatingSelector(
         //User picture
         Image(
             painter =  userPicturePainter ,
-            contentDescription = stringResource(id = R.string.user_picture_content_description),
+            contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .clip(CircleShape)
                 .size(45.dp)
         )
         //Rating stars selector bar
+        val ratingStarsBarContentDescription = stringResource(R.string.rating_stars_bar_content_description, ratingState.value.roundToInt())
         RatingStarsBar(
             modifier = Modifier
                 .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                .align(Alignment.CenterVertically),
+                .align(Alignment.CenterVertically)
+                .semantics {
+                    contentDescription = ratingStarsBarContentDescription
+                },
             ratingState = ratingState,
             onRatingChanged = onRatingChanged)
     }

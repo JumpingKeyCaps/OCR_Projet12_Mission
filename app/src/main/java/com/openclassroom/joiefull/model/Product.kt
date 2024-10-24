@@ -25,7 +25,8 @@ data class Product(
     val likes: Int,
     val price: Float,
     @Json(name = "original_price")val originalPrice: Float,
-    val rating: Float? = null
+    val rating: Float? = null,
+    val description: String? = null
 
 ) : Parcelable {
     @Parcelize

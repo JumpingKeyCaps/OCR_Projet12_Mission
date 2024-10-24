@@ -18,6 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +38,13 @@ import com.openclassroom.joiefull.R
  */
 @Composable
 fun LikeButton(likes: Int,modifier: Modifier,onClick: () -> Unit,isLiked: Boolean, sizing: Int) {
-    ElevatedButton(modifier = modifier,
+    val likeButtonAccessibilityLabel = stringResource(R.string.like_button_accessibility_label_liked)
+    val unLikeButtonAccessibilityLabel = stringResource(R.string.like_button_accessibility_label_unliked)
+    val likeButtonContentDescription = stringResource(R.string.like_button_content_description, likes)
+    ElevatedButton(modifier = modifier
+        .semantics {
+            onClick(label = if(!isLiked)likeButtonAccessibilityLabel else unLikeButtonAccessibilityLabel, action = {true})
+        },
         onClick = {
             onClick()
         },
@@ -48,11 +57,15 @@ fun LikeButton(likes: Int,modifier: Modifier,onClick: () -> Unit,isLiked: Boolea
         ) {
             Icon(modifier = Modifier.size(sizing.dp),
                 imageVector = if (isLiked) Icons.Filled.Favorite else Icons.Default.FavoriteBorder,
-                contentDescription = stringResource(R.string.like_button_content_description),
+                contentDescription = null,
                 tint = Color.Black
             )
             Spacer(modifier = Modifier.width(2.dp))
-            Text(text = likes.toString(), fontSize = sizing.sp, color = Color.Black, style = MaterialTheme.typography.bodySmall)
+            Text(text = likes.toString(), fontSize = sizing.sp, color = Color.Black, style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.semantics {
+                    contentDescription = likeButtonContentDescription
+                }
+            )
         }
     }
 }
