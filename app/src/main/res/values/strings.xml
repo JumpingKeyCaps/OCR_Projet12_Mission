@@ -45,4 +45,10 @@
     <!--default values for empty product description -->
     <string name="empty_product_description">Malheureusement, l\'article %s ne possède pas encore de description, elle sera bientôt disponible…</string>
 
+
+    <!--Sharing feature -->
+    <string name="share_feature_deeplink_builder">https://joiefull.app/productId/%s</string>
+    <string name="share_feature_share_text_builder">Hey, nouvelle trouvaille sur JoieFull : %s !\n %s</string>
+
+
 </resources>
