@@ -33,7 +33,6 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -56,8 +55,10 @@ import com.openclassroom.joiefull.viewmodel.ProductDetailsViewModel
 fun DetailsScreen(
     productId: Int,
     onBackClick: () -> Boolean,
+    shareFeatureClick: (Int,String) -> Unit,
     isExpandedMode: Boolean) {
 
+    //--- viewmodel (with the product ID binding)
     val viewModel = hiltViewModel<ProductDetailsViewModel,ProductDetailsViewModel.Factory>(
         key = productId.toString(),
         creationCallback = {
@@ -96,9 +97,11 @@ fun DetailsScreen(
                 .fillMaxWidth()
                 .padding(15.dp, 0.dp, 15.dp, 30.dp)
             ){
+                //Accessibility picture labels
                 val pictureAccessibilityLabelUpscale = stringResource(R.string.product_picture_accessibility_label_upscale)
                 val pictureAccessibilityLabelDownscale = stringResource(R.string.product_picture_accessibility_label_downscale)
 
+                //picture scaling mode (small/big)
                 val pictureScaleMode = remember{ mutableStateOf(false) }
                 val dpi = LocalDensity.current.density
 
@@ -135,8 +138,7 @@ fun DetailsScreen(
                     shareButtonModifier = Modifier
                         .semantics { this.traversalIndex = 7f; this.isTraversalGroup = true },
                     onShareClick = {
-                        //todo ---- SHARE FEATURE ----  share button click action, share the product name and price, commentary, and deep link
-                        //todo ---- SHARE FEATURE ----
+                        shareFeatureClick(productId,product?.name ?: "")
                     },
                     pictureProductContentDescription = product?.picture?.description ?: ""
                 )
@@ -191,11 +193,3 @@ fun DetailsScreen(
 
 }
 
-/**
- * Preview of the product details screen.
- */
-@Preview(showSystemUi = true)
-@Composable
-fun ProductDetailsScreenPreviews() {
-    DetailsScreen(0,{true},false)
-}
