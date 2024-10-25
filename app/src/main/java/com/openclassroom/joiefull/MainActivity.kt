@@ -5,12 +5,20 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.openclassroom.joiefull.compositions.JoiefullApp
+import com.openclassroom.joiefull.compositions.AdaptiveContent
+import com.openclassroom.joiefull.ui.theme.JoiefullTheme
 import dagger.hilt.android.AndroidEntryPoint
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 
 /**
  * Main activity of the application.
@@ -18,10 +26,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    //Adaptive navigator
+    @OptIn(ExperimentalMaterial3AdaptiveApi::class)
+    private lateinit var navigator: ThreePaneScaffoldNavigator<Int>
+
     /**
      * Lifecycle method that is called when the activity is created.
      * @param savedInstanceState The saved state of the activity.
      */
+    @OptIn(ExperimentalMaterial3AdaptiveApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         //Install splash screen (keep before the call of super.onCreate())
         installSplashScreen()
@@ -31,12 +44,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //Edge to edge navigation mode feature
         enableEdgeToEdge()
+        //Get the deeplink from the intent (Sharing feature)
+        val appLinkData: Uri? = intent.data
         //Main content of the activity
         setContent {
-            JoiefullApp()
+
+            //Set the adaptive navigator and configure it back navigation behaviour
+            navigator = rememberListDetailPaneScaffoldNavigator<Int>()
+            //Manage back navigation
+            BackHandler(enabled = navigator.canNavigateBack()) {
+                navigator.navigateBack()
+            }
+
+            //Call the adaptive composition
+            JoiefullTheme {
+                AdaptiveContent(navigator,appLinkData)
+            }
         }
+
     }
 
+    /**
+     *  Lifecycle method that is called when a new intent is received
+     *   AND the app is already open.
+     *
+     *  @param intent The new intent to handle.
+     *
+     */
+    @OptIn(ExperimentalMaterial3AdaptiveApi::class)
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.data?.lastPathSegment?.toIntOrNull()?.let {
+            navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, it)
+        }
+    }
 
     /**
      * Method to setup the splash screen end transition animation.
