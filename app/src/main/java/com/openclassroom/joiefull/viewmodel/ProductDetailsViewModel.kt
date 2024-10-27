@@ -7,6 +7,7 @@ import com.openclassroom.joiefull.data.repository.ProductRepository
 import com.openclassroom.joiefull.data.service.network.NetworkException
 import com.openclassroom.joiefull.model.Product
 import com.openclassroom.joiefull.model.ProductDetails
+import com.openclassroom.joiefull.model.ProductWithDetails
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -39,70 +40,53 @@ class ProductDetailsViewModel @AssistedInject constructor(
         fun create(productId: Int): ProductDetailsViewModel
     }
 
+    /** the product id to display **/
     private val id = productId
-
 
     /**
      * Initialisation du ViewModel
      */
-    init {
-        loadData()
-    }
+    init { loadData() }
 
     /**
      * Method to load the data via the product Id
      */
     private fun loadData() {
-        if (id == -1) {
-            throw IllegalArgumentException("Id cannot be -1")
-        }
-        getProductById(id)
-        getProductDetailsById(id)
+        if (id == -1) { throw IllegalArgumentException("Id cannot be -1") }
+        fetchProductsWithDetailsById(id)
     }
 
 
-    private val _productDetails = MutableStateFlow(ProductDetails())
-    val productDetails: StateFlow<ProductDetails> get() = _productDetails
-
-
-    private val _product = MutableStateFlow<Product?>(null)
-    val product: StateFlow<Product?> get() = _product
+    private val _productWithDetails = MutableStateFlow(ProductWithDetails())
+    val productWithDetails: StateFlow<ProductWithDetails> get() = _productWithDetails
 
 
     /**
-     * Method to get the product details by his ID.
-     * @param id the product ID.
+     * Method to fetch the product with details from the API/DBB with a specific ID
+     *
+     * @param id the id of the product to fetch.
      */
-    private fun getProductDetailsById(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            //Get the product details from the database
-            val productDetailsFlow = productDetailsRepository.getProductDetailsById(id).conflate()
-            //Collect the product details response flow from the database
-            productDetailsFlow.collect { productDetailsDto ->
-                //Check the response to know if the product had an details entry in the database
-                if(productDetailsDto != null){
-                    //the product exist in the details database, update the product details object to emit
-                    val productDetails = productDetailsDto.let { ProductDetails.fromDto(it) }
-                    _productDetails.value = productDetails
-                }else{
-                    //the product do not exist, add a new default entry for this product details in the database
-                    addProductDetails(ProductDetails(id = id))
-                }
-            }
-
-        }
-    }
-
-    /**
-     * Method to get the product by his ID.
-     * @param id the product ID.
-     */
-    private fun getProductById(id: Int){
+    private fun fetchProductsWithDetailsById(id: Int){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = productRepository.getClothes()
-                _product.value = response.find { it.id == id }
-
+                val responseApi = productRepository.getClothes()
+                val productWithThisId = responseApi.find { it.id == id } ?: Product()
+                viewModelScope.launch(Dispatchers.IO) {
+                    //Get the product details from the database
+                    val productDetailsFlow = productDetailsRepository.getProductDetailsById(id).conflate()
+                    //Collect the product details response flow from the database
+                    productDetailsFlow.collect { productDetailsDto ->
+                        //Check the response to know if the product had an details entry in the database
+                        if(productDetailsDto != null){
+                            //the product exist in the details database, update the product details object to emit
+                            val productDetails = productDetailsDto.let { ProductDetails.fromDto(it) }
+                            _productWithDetails.value = ProductWithDetails(id, productWithThisId, productDetails)
+                        }else{
+                            //the product do not exist, add a new default entry for this product details in the database
+                            addProductDetails(ProductDetails(id = id))
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 // Handle network errors, server errors, etc.
                 when (e) {
@@ -131,7 +115,7 @@ class ProductDetailsViewModel @AssistedInject constructor(
      */
     fun updateLikeValue(isLiked: Boolean){
         viewModelScope.launch(Dispatchers.IO) {
-           productDetailsRepository.addProductDetails(_productDetails.value.copy(isLiked = isLiked))
+           productDetailsRepository.addProductDetails(_productWithDetails.value.details.copy(isLiked = isLiked))
         }
     }
 
