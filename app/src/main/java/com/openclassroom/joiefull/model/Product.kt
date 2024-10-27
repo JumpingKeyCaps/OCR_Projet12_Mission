@@ -19,12 +19,12 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Product(
     val id: Int = 0,
-    val picture: Picture,
-    val name: String,
-    val category: String,
-    val likes: Int,
-    val price: Float,
-    @Json(name = "original_price")val originalPrice: Float,
+    val picture: Picture = Picture("", ""),
+    val name: String = "",
+    val category: String = "",
+    val likes: Int = 0,
+    val price: Float = 0.0f,
+    @Json(name = "original_price")val originalPrice: Float = 0.0f,
     val rating: Float? = null,
     val description: String? = null
 
