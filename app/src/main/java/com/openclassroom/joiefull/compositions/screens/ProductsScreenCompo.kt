@@ -1,5 +1,6 @@
 package com.openclassroom.joiefull.compositions.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,17 +29,17 @@ import com.openclassroom.joiefull.viewmodel.ProductListsViewModel
 fun ProductsScreen(
     viewModel: ProductListsViewModel = hiltViewModel(),
     onProductClick: (Int) -> Unit){
-    //Get the list of products by category from viewmodel
-    val productsByCategory by viewModel.products.collectAsStateWithLifecycle()
-    //Get the list of products details from viewmodel
-    val productsDetails by viewModel.productsDetails.collectAsStateWithLifecycle()
 
-    Scaffold(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(0.dp)) { it->
+    val productsWithDetails by viewModel.productsWithDetails.collectAsStateWithLifecycle()
+
+    Scaffold(modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background)
+        .padding(0.dp)) { it->
         LazyColumn(modifier = Modifier.padding(it)) {
-            items(productsByCategory.toList(),key = { (categoryName, _) -> categoryName }) { (categoryName, categoryProducts) ->
+            items(productsWithDetails.toList(),key = { (categoryName, _) -> categoryName }) { (categoryName, categoryProducts) ->
                 ProductList(
                     products = categoryProducts,
-                    productsDetails = productsDetails,
                     titleSection = categoryName,
                     onProductClick = onProductClick,
                     onLikeButtonClick = {
