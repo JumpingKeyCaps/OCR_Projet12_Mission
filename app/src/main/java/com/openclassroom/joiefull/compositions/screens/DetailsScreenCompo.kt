@@ -66,18 +66,16 @@ fun DetailsScreen(
         }
     )
 
-    //--- the product from the viewmodel
-    val product by viewModel.product.collectAsStateWithLifecycle()
-    //--- the product details from the viewmodel
-    val productDetails by viewModel.productDetails.collectAsStateWithLifecycle()
+
+    val productWithDetails by viewModel.productWithDetails.collectAsStateWithLifecycle()
 
 
     //--- the text  and rating input values
     val commentaryTextInput = remember { mutableStateOf("") }
     val ratingState = remember{ mutableFloatStateOf(0f) }
-    LaunchedEffect(productDetails){
-        ratingState.floatValue = productDetails.rating
-        commentaryTextInput.value = productDetails.commentary
+    LaunchedEffect(productWithDetails){
+        ratingState.floatValue = productWithDetails.details.rating
+        commentaryTextInput.value = productWithDetails.details.commentary
     }
 
 
@@ -107,13 +105,13 @@ fun DetailsScreen(
 
                 HeaderCard(
                     modifier = Modifier.align(Alignment.TopCenter),
-                    url = product?.picture?.url ?: "null",
-                    likes = product?.likes ?: 0,
+                    url = productWithDetails.product.picture.url,
+                    likes = productWithDetails.product.likes,
                     filterQuality = FilterQuality.High,
                     onLikeButtonClick = {
-                        viewModel.updateLikeValue(!productDetails.isLiked)
+                        viewModel.updateLikeValue(!productWithDetails.details.isLiked)
                     },
-                    isLiked = productDetails.isLiked,
+                    isLiked = productWithDetails.details.isLiked,
                     likeSizing = 18,
                     pictureModifier = Modifier
                         .fillMaxWidth()
@@ -138,17 +136,17 @@ fun DetailsScreen(
                     shareButtonModifier = Modifier
                         .semantics { this.traversalIndex = 7f; this.isTraversalGroup = true },
                     onShareClick = {
-                        shareFeatureClick(productId,product?.name ?: "")
+                        shareFeatureClick(productId,productWithDetails.product.name)
                     },
-                    pictureProductContentDescription = product?.picture?.description ?: ""
+                    pictureProductContentDescription = productWithDetails.product.picture.description
                 )
             }
             // [2] --- Product body (name, price, original price, ratings)
             BodyCard(
-                title = product?.name ?: "",
-                rating = productDetails.rating,
-                price = product?.price ?: 0f,
-                originalPrice = product?.originalPrice ?: 0f,
+                title = productWithDetails.product.name ,
+                rating = productWithDetails.details.rating,
+                price = productWithDetails.product.price ,
+                originalPrice = productWithDetails.product.originalPrice,
                 sizing = 18,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -156,9 +154,9 @@ fun DetailsScreen(
                     .semantics { this.traversalIndex = 2f ; this.isTraversalGroup = true},
             )
             // [3] --- Product description
-            val emptyProductDefaultDescription = stringResource(R.string.empty_product_description, product?.name ?: "")
+            val emptyProductDefaultDescription = stringResource(R.string.empty_product_description, productWithDetails.product.name)
             DescriptionProduct(
-                description = product?.description ?: emptyProductDefaultDescription,
+                description = productWithDetails.product.description ?: emptyProductDefaultDescription,
                 modifier = Modifier
                     .padding(20.dp,14.dp,20.dp,0.dp)
                     .semantics { this.traversalIndex = 3f; this.isTraversalGroup = true }
@@ -171,7 +169,7 @@ fun DetailsScreen(
                 ratingState = ratingState,
                 onRatingChanged = {
                     ratingState.floatValue = it
-                    viewModel.addProductDetails(productDetails.copy(rating = it))
+                    viewModel.addProductDetails(productWithDetails.details.copy(rating = it))
                 },
                 userPicturePainter = painterResource(id = R.drawable.demo_profile_pic) // not specified in the project !
                 //Painter resource to replace by the user picture logic, and call the picture url via coil like this:
@@ -182,8 +180,8 @@ fun DetailsScreen(
                 value = commentaryTextInput.value,
                 onValueChange = {
                     commentaryTextInput.value = it
-                    viewModel.addProductDetails(productDetails.copy(commentary = it))},
-                keyboardActions = { viewModel.addProductDetails(productDetails.copy(commentary = it))} ,
+                    viewModel.addProductDetails(productWithDetails.details.copy(commentary = it))},
+                keyboardActions = { viewModel.addProductDetails(productWithDetails.details.copy(commentary = it))} ,
                 modifier = Modifier
                     .padding(20.dp,20.dp,20.dp,20.dp)
                     .semantics { this.traversalIndex = 6f ; this.isTraversalGroup = true}
