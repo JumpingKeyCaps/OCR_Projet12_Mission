@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassroom.joiefull.data.repository.ProductDetailsRepository
 import com.openclassroom.joiefull.data.repository.ProductRepository
-import com.openclassroom.joiefull.data.service.network.NetworkException
-import com.openclassroom.joiefull.model.Product
 import com.openclassroom.joiefull.model.ProductDetails
+import com.openclassroom.joiefull.model.ProductWithDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,63 +26,33 @@ class ProductListsViewModel @Inject constructor(
     private val productDetailsRepository: ProductDetailsRepository
 ) : ViewModel() {
 
-    private val _products = MutableStateFlow<Map<String, List<Product>>>(emptyMap())
-    val products: StateFlow<Map<String, List<Product>>> get() = _products
+    private val _productsWithDetails = MutableStateFlow<Map<String, List<ProductWithDetails>>>(emptyMap())
+    val productsWithDetails: StateFlow<Map<String, List<ProductWithDetails>>> get() = _productsWithDetails
 
-    private val _productsDetails = MutableStateFlow<List<ProductDetails?>>(emptyList())
-    val productsDetails: StateFlow<List<ProductDetails?>> get() = _productsDetails
-
-
-    /**
-     * Initialisation du ViewModel
-     */
-    init {
-        fetchClothes()
-        fetchProductsDetails()
-    }
+    /** Initialisation du ViewModel */
+    init { fetchProductsWithDetails() }
 
     /**
-     * Method to get all the product details from the database.
-     *
+     * Method to fetch the products with details from the API/DBB.
      */
-    private fun fetchProductsDetails() {
+    private fun fetchProductsWithDetails(){
         viewModelScope.launch(Dispatchers.IO) {
-            val productDetailsFlow = productDetailsRepository.getAllProductDetails().conflate()
-            productDetailsFlow.collect { productDetailsDtoList ->
-                val productDetailsList = productDetailsDtoList.map { productDetailsDto ->
-                    productDetailsDto.let { ProductDetails.fromDto(it) }
-                }
-                _productsDetails.value = productDetailsList
-            }
-        }
-    }
+            // Fetch product list from the API
+            val products = productRepository.getClothes()
+            viewModelScope.launch(Dispatchers.IO) {
+                val productDetailsFlow = productDetailsRepository.getAllProductDetails().conflate()
+                productDetailsFlow.collect { productDetailsDtoList ->
+                    val productDetailsList = productDetailsDtoList.map { productDetailsDto ->
+                        productDetailsDto.let { ProductDetails.fromDto(it) }
+                    }
+                    val productWithDetailsBuild = products.map { product ->
+                        ProductWithDetails(product.id, product, productDetailsList.find { it.id == product.id } ?: ProductDetails(product.id))
+                    }
 
-    /**
-     * Method to get the clothes product list from the api.
-     */
-    private fun fetchClothes(){
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = productRepository.getClothes()
-                _products.value = groupProductsByCategory(response)
-            } catch (e: Exception) {
-                when (e) {
-                    is NetworkException.ServerErrorException ->{}
-                    is NetworkException.NetworkConnectionException  ->{}
-                    is NetworkException.UnknownNetworkException  ->{ }
-                    else -> { }
+                    _productsWithDetails.value = productWithDetailsBuild.groupBy { it.product.category }
                 }
             }
         }
-    }
-
-    /**
-     * Method to group the products by category.
-     * @param products the list of products to group.
-     * @return a map of the products grouped by category.
-     */
-    private fun groupProductsByCategory(products: List<Product>): Map<String, List<Product>> {
-        return products.groupBy { it.category }
     }
 
     /**
