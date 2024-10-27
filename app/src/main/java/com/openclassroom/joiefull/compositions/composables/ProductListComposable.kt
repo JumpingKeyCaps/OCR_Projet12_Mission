@@ -13,14 +13,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.openclassroom.joiefull.R
 import com.openclassroom.joiefull.compositions.components.TitleSection
-import com.openclassroom.joiefull.model.Product
 import com.openclassroom.joiefull.model.ProductDetails
+import com.openclassroom.joiefull.model.ProductWithDetails
 
 /**
  * The composable function of the screen composition responsible to display a list of products.
  *
  * @param products The list of products to display.
- * @param productsDetails The list of product details to display.
  * @param titleSection The title of the section.
  * @param modifier The modifier.
  * @param onProductClick The function to call when a product is clicked.
@@ -29,8 +28,7 @@ import com.openclassroom.joiefull.model.ProductDetails
 
 @Composable
 fun ProductList(
-    products: List<Product>,
-    productsDetails: List<ProductDetails?>,
+    products: List<ProductWithDetails>,
     titleSection: String,
     modifier: Modifier = Modifier,
     onProductClick: (Int) -> Unit,
@@ -44,18 +42,18 @@ fun ProductList(
         //LIST OF PRODUCT CARDS
         val clickDetailsActionLabel = stringResource(R.string.action_click_product_picture)
         LazyRow(modifier = modifier.fillMaxWidth()) {
-            items(products, key = { product -> product.id }) { product ->    //(use of Key to recomposition optimisation)
+            items(products, key = { productWDetails -> productWDetails.id }) { productWDetails ->    //(use of Key to recomposition optimisation)
                 ProductCard(
-                    product = product,
-                    productDetails = productsDetails.find { it?.id == product.id } ?: ProductDetails(),
+                    product = productWDetails.product,
+                    productDetails = productWDetails.details,
                     modifier = Modifier.padding(
-                        start = if(products.indexOf(product) == 0) 15.dp else 3.dp, //special left padding for the 1st element of the list
+                        start = if(products.indexOf(productWDetails) == 0) 15.dp else 3.dp, //special left padding for the 1st element of the list
                         top = 0.dp,
-                        end = if(products.indexOf(product) == products.lastIndex) 15.dp else 3.dp,  //special right padding for the last element of the list
+                        end = if(products.indexOf(productWDetails) == products.lastIndex) 15.dp else 3.dp,  //special right padding for the last element of the list
                         bottom = 0.dp),
                     pictureModifier = Modifier
                         .clickable(onClickLabel = clickDetailsActionLabel ) {
-                             onProductClick(product.id)
+                             onProductClick(productWDetails.id)
                         },
                     onLikeButtonClick = onLikeButtonClick
                 )
