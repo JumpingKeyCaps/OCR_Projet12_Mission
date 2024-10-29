@@ -1,6 +1,7 @@
 package com.openclassroom.joiefull
 
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -17,8 +18,16 @@ import com.openclassroom.joiefull.compositions.AdaptiveContent
 import com.openclassroom.joiefull.ui.theme.JoiefullTheme
 import dagger.hilt.android.AndroidEntryPoint
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
 import android.net.Uri
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import com.openclassroom.joiefull.compositions.screens.NoInternetScreen
 
 /**
  * Main activity of the application.
@@ -48,17 +57,15 @@ class MainActivity : ComponentActivity() {
         val appLinkData: Uri? = intent.data
         //Main content of the activity
         setContent {
-
             //Set the adaptive navigator and configure it back navigation behaviour
             navigator = rememberListDetailPaneScaffoldNavigator<Int>()
             //Manage back navigation
             BackHandler(enabled = navigator.canNavigateBack()) {
                 navigator.navigateBack()
             }
-
             //Call the adaptive composition
             JoiefullTheme {
-                AdaptiveContent(navigator,appLinkData)
+                CheckInternetConnection(appLinkData)
             }
         }
 
@@ -94,4 +101,37 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Method to check the internet connection and display the appropriate screen.
+     * @param appLinkData The deeplink from the intent (Sharing feature).
+     */
+    @OptIn(ExperimentalMaterial3AdaptiveApi::class)
+    @Composable
+    private fun CheckInternetConnection(appLinkData: Uri?){
+        val connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val isConnected = remember { mutableStateOf(false) }
+        // Check the internet connection state
+        DisposableEffect(connectivityManager) {
+            val callback = object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    isConnected.value = true
+                }
+                override fun onLost(network: Network) {
+                    isConnected.value = false
+                }
+            }
+            connectivityManager.registerDefaultNetworkCallback(callback)
+            onDispose {
+                connectivityManager.unregisterNetworkCallback(callback)
+            }
+        }
+
+        if (isConnected.value) {
+            // Internet connection is available -- go to main screen app
+            AdaptiveContent(navigator, appLinkData)
+        } else {
+            // Internet connection is not available -- go to no internet screen
+            NoInternetScreen()
+        }
+    }
 }

@@ -50,7 +50,8 @@ fun AdaptiveContent(
                 ProductsScreen(
                     onProductClick = {
                         navigator.navigateTo(ListDetailPaneScaffoldRole.Detail,it)
-                })
+                    }
+                )
             }
         },
         //2- Details pane content --- (product details screen)
