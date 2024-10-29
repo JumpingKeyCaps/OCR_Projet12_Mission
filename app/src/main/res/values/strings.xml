@@ -50,5 +50,10 @@
     <string name="share_feature_deeplink_builder">https://joiefull.app/productId/%s</string>
     <string name="share_feature_share_text_builder">Hey, nouvelle trouvaille sur JoieFull : %s !\n %s</string>
 
+    <!--No internet screen -->
+    <string name="no_internet_title">Pas de connexion internet</string>
+    <string name="no_internet_description">Joiefull a besoin d\'internet pour fonctionner.</string>
+    <string name="no_internet_content_description">Icone d\'absence de connexion a internet</string>
+
 
 </resources>
