@@ -16,3 +16,4 @@ val YellowRating = Color(0xFFE17508)
 
 val RatingBarUnselectedColor = Color(0xFFA2ADB1)
 val RatingBarSelectedColor = Color(0xFFF99F43)
+val YellowJoiefull = Color(0xFFF99F43)
