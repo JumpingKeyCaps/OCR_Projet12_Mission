@@ -36,7 +36,7 @@ class ProductListsViewModel @Inject constructor(
     /**
      * Method to fetch the products with details from the API/DBB.
      */
-    private fun fetchProductsWithDetails(){
+    fun fetchProductsWithDetails(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // Fetch product list from the API
