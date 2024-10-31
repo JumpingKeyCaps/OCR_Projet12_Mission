@@ -65,15 +65,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.adaptive.android)
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
 
 
     //SplashScreen library
@@ -101,10 +98,10 @@ dependencies {
     implementation (libs.converter.moshi)
 
     //Room
-    implementation ("androidx.room:room-runtime:2.6.1")
-    annotationProcessor ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
-    ksp ("androidx.room:room-compiler:2.6.1")
+    implementation (libs.androidx.room.runtime)
+    annotationProcessor (libs.room.compiler)
+    implementation (libs.androidx.room.ktx)
+    ksp (libs.room.compiler)
 
 
     //Adaptive library stuff
@@ -113,5 +110,10 @@ dependencies {
     implementation(libs.androidx.adaptive.navigation)
 
 
-
+    //Tests
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation (libs.androidx.core.testing)
 }
